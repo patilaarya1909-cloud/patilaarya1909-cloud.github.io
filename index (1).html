@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aarya Patil // Portfolio</title>
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<!-- FontAwesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --accent-color: #FFE600;
+  --accent-secondary: #FF8C00;
+  --bg-dark: #050510;
+  --bg-panel: rgba(10, 10, 25, 0.65);
+  --text-primary: #e0e0ff;
+  --text-dim: #8888aa;
+  --border-glow: rgba(0, 240, 255, 0.3);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Rajdhani', sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* === TEXT SELECTION === */
+::selection {
+  background: var(--accent-color);
+  color: #000;
+}
+::-moz-selection {
+  background: var(--accent-color);
+  color: #000;
+}
+
+/* === SCROLLBAR === */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #0a0a1a; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--accent-color), var(--accent-secondary));
+  border-radius: 4px;
+}
+
+/* === HIDE DEFAULT CURSOR === */
+body, a, button, input, [role="button"] {
+  cursor: none !important;
+}
+
+/* === CUSTOM CURSOR === */
+.cursor-dot {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, background 0.2s;
+  box-shadow: 0 0 10px var(--accent-color);
+}
+.cursor-ring {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--accent-color);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, border-color 0.3s, opacity 0.3s;
+  opacity: 0.6;
+}
+.cursor-hover .cursor-dot {
+  width: 20px;
+  height: 20px;
+  background: var(--accent-secondary);
+  box-shadow: 0 0 20px var(--accent-secondary);
+}
+.cursor-hover .cursor-ring {
+  width: 60px;
+  height: 60px;
+  border-color: var(--accent-secondary);
+  opacity: 0.8;
+}
+
+/* === CYBERPUNK GRID BACKGROUND === */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-image:
+    linear-gradient(rgba(255,230,0,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,230,0,0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+  z-index: 0;
+}
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(255,140,0,0.12), transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(255,230,0,0.12), transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* === NAV === */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 3rem;
+  background: rgba(5, 5, 16, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-glow);
+}
+.logo {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 1.5rem;
+  color: var(--accent-color);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-shadow: 0 0 15px var(--accent-color);
+}
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+.nav-links a {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: color 0.3s, text-shadow 0.3s;
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 0; height: 2px;
+  background: var(--accent-color);
+  box-shadow: 0 0 8px var(--accent-color);
+  transition: width 0.3s;
+}
+.nav-links a:hover {
+  color: var(--accent-color);
+  text-shadow: 0 0 10px var(--accent-color);
+}
+.nav-links a:hover::after { width: 100%; }
+
+/* === HERO === */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 1;
+  padding: 6rem 2rem 2rem;
+}
+.hero-tag {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--accent-secondary);
+  font-size: 0.9rem;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 10px var(--accent-secondary);
+}
+.hero-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(2.5rem, 8vw, 6rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 1;
+  background: linear-gradient(135deg, #FFE600 0%, #FF8C00 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 30px rgba(255,230,0,0.3));
+}
+.hero-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: clamp(1rem, 3vw, 1.8rem);
+  font-weight: 300;
+  color: var(--text-dim);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-top: 0.5rem;
+}
+.hero-bio {
+  max-width: 600px;
+  margin-top: 2rem;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--text-primary);
+  opacity: 0.85;
+}
+.hero-socials {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+.hero-socials a {
+  width: 50px; height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-glow);
+  border-radius: 50%;
+  color: var(--accent-color);
+  font-size: 1.3rem;
+  text-decoration: none;
+  background: var(--bg-panel);
+  backdrop-filter: blur(5px);
+  transition: all 0.3s;
+}
+.hero-socials a:hover {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 20px var(--accent-color);
+  transform: translateY(-5px);
+}
+
+/* === SECTIONS === */
+section {
+  position: relative;
+  z-index: 1;
+  padding: 5rem 3rem;
+}
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+.section-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: var(--accent-color);
+  text-shadow: 0 0 20px rgba(255,230,0,0.4);
+}
+.section-subtitle {
+  color: var(--text-dim);
+  font-size: 1rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 0.5rem;
+}
+
+/* === PROFILE / ABOUT === */
+.profile-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.profile-avatar {
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  border: 3px solid var(--accent-color);
+  box-shadow: 0 0 30px rgba(255,230,0,0.4), inset 0 0 20px rgba(255,230,0,0.1);
+  object-fit: cover;
+  background: var(--bg-panel);
+}
+.profile-stats {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.stat-card {
+  text-align: center;
+  padding: 1.5rem 2rem;
+  background: var(--bg-panel);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-glow);
+  border-radius: 12px;
+  min-width: 120px;
+  position: relative;
+  overflow: hidden;
+}
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+  animation: scan 3s infinite;
+}
+@keyframes scan {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+.stat-value {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent-color);
+  text-shadow: 0 0 10px var(--accent-color);
+}
+.stat-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  margin-top: 0.3rem;
+}
+
+/* === PROJECTS GRID === */
+.projects-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 2rem;
+}
+.project-card {
+  background: var(--bg-panel);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-glow);
+  border-radius: 12px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.1s, box-shadow 0.3s, border-color 0.3s;
+  transform-style: preserve-3d;
+}
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: linear-gradient(90deg, var(--accent-color), var(--accent-secondary));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.project-card:hover {
+  border-color: var(--accent-color);
+  box-shadow: 0 10px 40px rgba(255,230,0,0.15), 0 0 20px rgba(255,230,0,0.1);
+}
+.project-card:hover::before { opacity: 1; }
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+.project-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent-color);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.project-stars {
+  color: var(--accent-secondary);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+.project-desc {
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  min-height: 3rem;
+}
+.project-lang {
+  display: inline-block;
+  font-size: 0.8rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  border: 1px solid var(--accent-secondary);
+  color: var(--accent-secondary);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent-color);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 1rem;
+  transition: gap 0.3s;
+}
+.project-link:hover { gap: 1rem; }
+
+/* === LOADING === */
+.loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem;
+  grid-column: 1 / -1;
+}
+.loader-bar {
+  width: 200px;
+  height: 4px;
+  background: var(--bg-panel);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+.loader-bar::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 40%; height: 100%;
+  background: linear-gradient(90deg, var(--accent-color), var(--accent-secondary));
+  animation: loading 1.5s infinite;
+}
+@keyframes loading {
+  0% { left: -40%; }
+  100% { left: 100%; }
+}
+.loader-text {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--accent-color);
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+/* === FOOTER === */
+footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 3rem;
+  border-top: 1px solid var(--border-glow);
+  background: rgba(5,5,16,0.8);
+  backdrop-filter: blur(10px);
+}
+footer p {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+}
+footer .accent { color: var(--accent-color); }
+
+/* === GLITCH EFFECT === */
+.glitch {
+  position: relative;
+}
+.glitch::before, .glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  background: var(--bg-dark);
+  overflow: hidden;
+}
+.glitch::before {
+  left: 2px;
+  text-shadow: -2px 0 var(--accent-secondary);
+  clip-path: inset(0 0 0 0);
+  animation: glitch-1 3s infinite linear alternate-reverse;
+}
+.glitch::after {
+  left: -2px;
+  text-shadow: 2px 0 var(--accent-color);
+  clip-path: inset(0 0 0 0);
+  animation: glitch-2 2.5s infinite linear alternate-reverse;
+}
+@keyframes glitch-1 {
+  0%, 100% { clip-path: inset(0 0 95% 0); }
+  20% { clip-path: inset(20% 0 50% 0); }
+  40% { clip-path: inset(50% 0 20% 0); }
+  60% { clip-path: inset(10% 0 70% 0); }
+  80% { clip-path: inset(70% 0 5% 0); }
+}
+@keyframes glitch-2 {
+  0%, 100% { clip-path: inset(85% 0 5% 0); }
+  20% { clip-path: inset(40% 0 40% 0); }
+  40% { clip-path: inset(10% 0 80% 0); }
+  60% { clip-path: inset(60% 0 10% 0); }
+  80% { clip-path: inset(30% 0 50% 0); }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { gap: 1rem; }
+  .nav-links a { font-size: 0.8rem; letter-spacing: 1px; }
+  section { padding: 3rem 1.5rem; }
+  .profile-container { gap: 2rem; }
+  .profile-stats { gap: 1rem; }
+  .stat-card { padding: 1rem 1.5rem; min-width: 90px; }
+  .hero-socials { gap: 1rem; }
+  .hero-socials a { width: 42px; height: 42px; font-size: 1.1rem; }
+}
+@media (max-width: 480px) {
+  .nav-links { display: none; }
+  .projects-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- CUSTOM CURSOR -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="logo glitch" data-text="AP_">AP_</div>
+  <ul class="nav-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-tag">/// SYSTEM ONLINE</div>
+  <h1 class="hero-name">Aarya Patil</h1>
+  <div class="hero-title">Engineer // Developer // Designer</div>
+  <p class="hero-bio">
+    I am an engineering student interested in software development, AI, and UI/UX design.
+    I enjoy creating practical projects that solve real-world problems and learning new technologies.
+  </p>
+  <div class="hero-socials">
+    <a href="https://github.com/patilaarya1909-cloud" target="_blank" rel="noopener" title="GitHub" data-hover>
+      <i class="fab fa-github"></i>
+    </a>
+    <a href="https://www.linkedin.com/in/aarya-patil-77006b349" target="_blank" rel="noopener" title="LinkedIn" data-hover>
+      <i class="fab fa-linkedin"></i>
+    </a>
+  </div>
+</section>
+
+<!-- ABOUT / PROFILE -->
+<section id="about">
+  <div class="section-header">
+    <h2 class="section-title">// Profile</h2>
+    <p class="section-subtitle">GitHub Integration Active</p>
+  </div>
+  <div class="profile-container">
+    <img class="profile-avatar" id="avatar" src="" alt="GitHub Avatar">
+    <div class="profile-stats">
+      <div class="stat-card">
+        <div class="stat-value" id="followers">--</div>
+        <div class="stat-label">Followers</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="following">--</div>
+        <div class="stat-label">Following</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="publicRepos">--</div>
+        <div class="stat-label">Repositories</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="totalStars">--</div>
+        <div class="stat-label">Total Stars</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header">
+    <h2 class="section-title">// Projects</h2>
+    <p class="section-subtitle">Top Repositories by Stars</p>
+  </div>
+  <div class="projects-grid" id="projectsGrid">
+    <div class="loader">
+      <div class="loader-bar"></div>
+      <div class="loader-text">Fetching Repositories...</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER / CONTACT -->
+<footer id="contact">
+  <p>/// <span class="accent">Aarya Patil</span> // Built with HTML, CSS, GSAP</p>
+  <p style="margin-top:0.5rem; font-size:0.8rem;">© 2026 // All Systems Operational</p>
+</footer>
+
+<script>
+// ========================
+// CONFIG
+// ========================
+const GITHUB_USERNAME = 'patilaarya1909-cloud';
+
+// ========================
+// CUSTOM CURSOR
+// ========================
+(function() {
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  let mouseX = 0, mouseY = 0;
+  let ringX = 0, ringY = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    dot.style.left = mouseX + 'px';
+    dot.style.top = mouseY + 'px';
+  });
+
+  // Smooth trailing ring
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.15;
+    ringY += (mouseY - ringY) * 0.15;
+    ring.style.left = ringX + 'px';
+    ring.style.top = ringY + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  // Hover morph on clickable elements
+  document.querySelectorAll('a, button, [data-hover], .project-card').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+  });
+})();
+
+// ========================
+// GITHUB API FETCH
+// ========================
+(async function() {
+  try {
+    const [userRes, reposRes] = await Promise.all([
+      fetch(`https://api.github.com/users/${GITHUB_USERNAME}`),
+      fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100`)
+    ]);
+
+    if (!userRes.ok || !reposRes.ok) throw new Error('GitHub API error');
+
+    const user = await userRes.json();
+    const repos = await reposRes.json();
+
+    // Populate profile
+    document.getElementById('avatar').src = user.avatar_url || '';
+    document.getElementById('followers').textContent = user.followers ?? 0;
+    document.getElementById('following').textContent = user.following ?? 0;
+    document.getElementById('publicRepos').textContent = user.public_repos ?? 0;
+
+    // Sort by stars desc, take top 6
+    const sortedRepos = repos
+      .filter(r => !r.fork)
+      .sort((a, b) => b.stargazers_count - a.stargazers_count)
+      .slice(0, 6);
+
+    const totalStars = repos.reduce((sum, r) => sum + r.stargazers_count, 0);
+    document.getElementById('totalStars').textContent = totalStars;
+
+    // Render project cards
+    const grid = document.getElementById('projectsGrid');
+    grid.innerHTML = '';
+
+    if (sortedRepos.length === 0) {
+      grid.innerHTML = '<p style="text-align:center; color:var(--text-dim); grid-column:1/-1;">No public repositories found.</p>';
+      return;
+    }
+
+    sortedRepos.forEach(repo => {
+      const card = document.createElement('div');
+      card.className = 'project-card';
+      card.innerHTML = `
+        <div class="project-header">
+          <h3 class="project-name">${repo.name}</h3>
+          <span class="project-stars"><i class="fas fa-star"></i> ${repo.stargazers_count}</span>
+        </div>
+        <p class="project-desc">${repo.description || 'No description available.'}</p>
+        ${repo.language ? `<span class="project-lang">${repo.language}</span>` : ''}
+        <br>
+        <a href="${repo.html_url}" target="_blank" rel="noopener" class="project-link">
+          View Repository <i class="fas fa-arrow-right"></i>
+        </a>
+      `;
+      grid.appendChild(card);
+    });
+
+    // Re-bind cursor hover for newly created cards
+    document.querySelectorAll('.project-card').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+    });
+
+    // 3D tilt effect on project cards
+    document.querySelectorAll('.project-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -8;
+        const rotateY = ((x - centerX) / centerX) * 8;
+        card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(800px) rotateX(0) rotateY(0) translateZ(0)';
+      });
+    });
+
+    // Scroll-triggered entrance animations for project cards
+    if (window.gsap && window.ScrollTrigger) {
+      gsap.registerPlugin(ScrollTrigger);
+      gsap.from('.project-card', {
+        opacity: 0,
+        y: 60,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '#projects',
+          start: 'top 75%'
+        }
+      });
+      // Also animate stat cards
+      gsap.from('.stat-card', {
+        opacity: 0,
+        y: 40,
+        duration: 0.7,
+        stagger: 0.12,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '#about',
+          start: 'top 70%'
+        }
+      });
+    }
+
+  } catch (err) {
+    console.error('GitHub fetch error:', err);
+    const grid = document.getElementById('projectsGrid');
+    grid.innerHTML = `<p style="text-align:center; color:var(--accent-secondary); grid-column:1/-1;">
+      <i class="fas fa-exclamation-triangle"></i> Failed to load GitHub data. Rate limit may be reached.
+    </p>`;
+    document.getElementById('avatar').src = `https://github.com/${GITHUB_USERNAME}.png`;
+  }
+})();
+
+// ========================
+// GSAP HERO ENTRANCE
+// ========================
+window.addEventListener('load', () => {
+  if (!window.gsap) return;
+
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+  tl.from('.hero-tag', { opacity: 0, y: -20, duration: 0.6 })
+    .from('.hero-name', { opacity: 0, y: 40, duration: 1, filter: 'blur(10px)' }, '-=0.3')
+    .from('.hero-title', { opacity: 0, y: 20, duration: 0.6 }, '-=0.5')
+    .from('.hero-bio', { opacity: 0, y: 20, duration: 0.6 }, '-=0.4')
+    .from('.hero-socials a', { opacity: 0, y: 20, duration: 0.5, stagger: 0.1 }, '-=0.3')
+    .from('nav', { opacity: 0, y: -30, duration: 0.6 }, 0);
+
+  // Nav fade on scroll
+  if (window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+  }
+});
+</script>
+</body>
+</html>
